@@ -16,7 +16,6 @@ Board* update_board(Board *bptr) {
 	}	
 
 	char oneround[8];  
-//	printf("updating board %s\n", updatingboard);
 	int rows = 0; // no wraping
 	int cols = 0;	
 	int count=0;
@@ -25,8 +24,6 @@ Board* update_board(Board *bptr) {
 	for (int i=0; i<=size; i++) { // go though the board and update it
 		if (i<bptr->ncols-1 && cols != 0) { // first row
 			// not wraping inner top row
-			//printf("times %d col%d\n", i, cols);
-			//printf("stuff %c\n", board[i+(size-4)]);	
 			if (board[i+1] == 'g') {
 				oneround[0] = 'g';
 			}	
@@ -78,7 +75,6 @@ Board* update_board(Board *bptr) {
 			}
 			
 			for (int a=0; a<=7; a++) {
-				//printf("top oneround[%d] %c\n", a, oneround[a]);
 				if (oneround[a] == 'g' || oneround[a] == 'r') {
 					count ++;
 				}
@@ -89,13 +85,8 @@ Board* update_board(Board *bptr) {
 					countr ++;
 				}	
 			}	
-			//if (count > 3 || count < 2) {
-				//if (board[i] == 'g' || board[i] == 'r') {
-					//updatingboard[i] = 'x';
-				//}	
-		//	}	
-			if (count == 3 && board[i] == 'x' && countg > countr) {
-				//printf("help");
+			
+            if (count == 3 && board[i] == 'x' && countg > countr) {
 				updatingboard[i] = 'g';
 			}	
 			if (count == 3 && board[i] == 'x' && countr > countg) {
@@ -189,13 +180,9 @@ Board* update_board(Board *bptr) {
 			}	
 			
 		}	
-		//printf("rows %d\n", rows);
 
 		if (cols == bptr->ncols-1) { // left side non wraping   3
 // this one takes in the corners
-			//printf("in rows %d\n", rows);
-			//printf("times %d col%d\n", i, cols);
-			//printf("stuff %c\n", board[i+(size-4)]);	
 			if (board[i-4] == 'g') {
 				oneround[0] = 'g';
 			}	
@@ -247,7 +234,6 @@ Board* update_board(Board *bptr) {
 			}	
 		
 			for (int j=0; j<=7; j++) {	
-				//printf("left oneround[%d] %c\n", j, oneround[j]);
 				if (oneround[j] == 'g' || oneround[j] == 'r') {
 					count ++;
 				}
@@ -279,7 +265,6 @@ Board* update_board(Board *bptr) {
 			}	
 			cols = 0;
 			rows ++;
-			//printf("rows %d cols = %d\n", rows, cols);	
 		}	
 // end of col 3		
 		else if (cols == 0) {
@@ -303,9 +288,7 @@ Board* update_board(Board *bptr) {
 
 		}	
 // end of col 0		
-		//if (i == size-bptr->ncols) { // fix later    16
-		//	break;
-		//}	
+
 // end of last row
 		if (board[i+1]) {
 			if (board[i+1] == 'g') {
@@ -317,7 +300,6 @@ Board* update_board(Board *bptr) {
 			else {
 				oneround[0] = 'x';
 			}	
-		//	printf("oneround %c\n", oneround[0]);
 		}		
 		if (board[i-1]) {
 			if (board[i-1] == 'g') {
@@ -397,7 +379,6 @@ Board* update_board(Board *bptr) {
 			}	
 			cols ++;
 			for (int r=0; r<=7; r++) {
-//				printf("oneround[%d] %c\n", r, oneround[r]);
 				if (oneround[r] == 'g' || oneround[r] == 'r') {
 					count ++;
 				}	
@@ -410,9 +391,7 @@ Board* update_board(Board *bptr) {
 			}	
 		}		
 		if (count > 3 || count < 2) { 
-				//printf("count out %d\n", count);
 				if (count > 3 && (count != 0 || count != bptr->ncols-1)) {
-					//printf("hit\n");	
 					updatingboard[i] = 'x';
 					count = 0;
 					countg = 0;
@@ -422,12 +401,8 @@ Board* update_board(Board *bptr) {
 					count = 0;
 				}		
 		}
-//		if (count == 3 && board[i] == 'x' && countg > countr) {
-			//		updatingboard[i] = 'g';
-//				printf("new board g\n");
-//		}
+
 		if (count == 3 && board[i] == 'x' && countr > countg) {
-			//		updatingboard[i] = 'r';
 				count=0;
 				countg=0;
 				countr=0;
@@ -451,33 +426,30 @@ Board* update_board(Board *bptr) {
 	if (bptr->time == 1) {
 		printf("\nThe board after %d time:\n", bptr->time);
 	}
-	printf("\nThe board after %d times:\n", bptr->time);
-	for (int i=0; i<=size; i++) {
-		//printf("ncols: %d\n", colcount);
-		//printf("%c", updatingboard[i]);
+    else {
+	    printf("\nThe board after %d times:\n", bptr->time);
+    }
+    
+    for (int i=0; i<=size; i++) {
 		if (colcount != bptr->ncols) {
 			colcount++;
 			printf("%c", updatingboard[i]);
 		}
 		if (colcount == bptr->ncols) {
 			rowcount++;
-			//printf("%c", updatingboard[i]);
 			colcount = 0;
 			printf("\n");
 		}
 		if (rowcount == bptr->nrows) {
-			//col_count++;
-			//printf("%c", updatingboard[i]);
 			rowcount = 1;
 			printf("\n");
-			//break;
 		}
 	}
-	printf("updating board %s\n", updatingboard);
+
 	printf("green: %d, red: %d\n", gcount, rcount);
-//	bptr->grid = updatingboard;
 	free(bptr->grid);
 	free(bptr);
 	free(updatingboard);
 	return bptr;	
-}		
+}	
+
